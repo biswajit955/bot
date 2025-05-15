@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Generate reCAPTCHA Token</title>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcqUTMrAAAAANtmP9BAyBJj5EEJxq2ZjGdXVlnz"></script>
+  </head>
+  <body>
+    <h1>reCAPTCHA Token Generator</h1>
+    <input type="text" id="phone" placeholder="+15551234567" />
+    <button onclick="generateToken()">Get reCAPTCHA Token</button>
+
+    <p id="output"></p>
+
+    <script>
+      function generateToken() {
+        grecaptcha.ready(function () {
+          grecaptcha.execute('6LcqUTMrAAAAANtmP9BAyBJj5EEJxq2ZjGdXVlnz', { action: 'send_otp' }).then(function (token) {
+            document.getElementById('output').innerText = `reCAPTCHA Token:\n${token}`;
+            console.log('Token:', token);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
