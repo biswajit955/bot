@@ -61,10 +61,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'bot.urls'
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # add frontend origin explicitly
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 TEMPLATES = [
