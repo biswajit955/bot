@@ -105,6 +105,9 @@ class VerifyOTP(APIView):
         )
 
         return Response({
+            'full_name':user.full_name,
+            'email':user.email,
+            'phone_number':user.phone_number,
             'access':  str(refresh.access_token),
             'refresh': str(refresh),
         }, status=status.HTTP_200_OK)
@@ -123,7 +126,10 @@ class VerifyOTP(APIView):
 
 
 class RegisterView(APIView):
-    # {"full_name": "Biswajit Paloi", "email":"test@email.com" , "phone_number":"+917602215541","password":"zzzzzz10","confirm_password":"zzzzzz10"}    
+    """
+    POST {"full_name": "Biswajit Paloi", "email":"test@email.com" , "phone_number":"+911234567890","password":"zzzzzz10","confirm_password":"zzzzzz10"}    
+    → 200 { "phone_no": "..." }
+    """   
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -146,3 +152,32 @@ class LogoutView(APIView):
             return Response({"message": "Logged out successfully."}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class HomeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        sessions = DeviceSession.objects.filter(user=user)
+
+        session_data = []
+        for s in sessions:
+            session_data.append({
+                "device": s.device_name,
+                "ip": s.device_ip,
+                "location": s.device_location,
+                "created_at": s.created_at,
+                "expires_at": s.expires_at,
+                "is_expired": s.is_expired(),
+            })
+
+        return Response({
+            "user": {
+                "id": user.id,
+                "full_name": user.full_name,
+                "email": user.email,
+                "phone": user.phone_number,
+            },
+            "active_sessions": session_data
+        })

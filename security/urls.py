@@ -4,7 +4,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .views import SendOTP, VerifyOTP, RegisterView, LogoutView
+from .views import SendOTP, VerifyOTP, RegisterView, LogoutView, HomeView
 
 urlpatterns = [
     path('auth/token/',TokenObtainPairView.as_view(),name='token_obtain_pair'),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('auth/verify-otp/', VerifyOTP.as_view(), name='verify_otp'),
     path('auth/register/', RegisterView.as_view(),   name='register'),
     path('auth/log-out/', LogoutView.as_view(), name='log_out'),
+    path('home/', HomeView.as_view(), name='home'),
 ]
